@@ -21,5 +21,5 @@ Example: `L2ADDR="127.0.0.1" L2PORT="8080" L2WAIT=10 ./server -d`
 Server returns a `"MESSAGE"` in [Base64 encoding](https://en.wikipedia.org/wiki/Base64).
 
 ### How to use signals
-1. know the `pid_of_server` with the following command: `lsof -i :[PORT]`
+1. find out the `pid_of_server` with the following command: `lsof -i :[PORT]`
 2. use the following command to sent a signal: `kill -SIGNAL pid_of_server`
