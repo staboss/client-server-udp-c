@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.15)
+project(client_server_udp C)
+
+set(CMAKE_C_STANDARD 11)
+add_executable(server main.c server.c server.h common.c common.h)
+add_executable(client main.c server.c server.h common.c common.h)
+target_compile_definitions(server PRIVATE -DSERVER)
+target_compile_definitions(client PRIVATE -DCLIENT)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(server pthread)
+target_link_libraries(client pthread)
