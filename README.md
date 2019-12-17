@@ -18,7 +18,7 @@ Example: `L2ADDR="127.0.0.1" L2PORT="8080" L2WAIT=10 ./server -d`
 ### How to use a client
 `./client -a [HOST] -p [PORT] -m "MESSAGE"`
 
-Server returns a `“MESSAGE”` in [Base64 encoding](https://en.wikipedia.org/wiki/Base64).
+Server returns a `"MESSAGE"` in [Base64 encoding](https://en.wikipedia.org/wiki/Base64).
 
 ### How to use signals
 1. know the `pid_of_server` with the following command: `lsof -i :[PORT]`
