@@ -22,4 +22,4 @@ Server returns a `"MESSAGE"` in [Base64 encoding](https://en.wikipedia.org/wiki/
 
 ### How to use signals
 1. find out the `pid_of_server` with the following command: `lsof -i :[PORT]`
-2. use the following command to sent a signal: `kill -SIGNAL pid_of_server`
+2. use the following command to send a signal: `kill -SIGNAL pid_of_server`
