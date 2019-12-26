@@ -314,7 +314,7 @@ void client(char *ip, int port, char *message) {
 //  запуск в режиме демона
 void run_as_daemon(void) {
 
-    //  закрываем дискрипторы ввода/вывода ошибок
+    //  закрываем дескрипторы ввода/вывода ошибок
     close(fileno(stdin));
     close(fileno(stdout));
     close(fileno(stderr));
