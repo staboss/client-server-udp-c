@@ -17,50 +17,35 @@ static int time_format_len = 27;
 
 //  логирование
 void p_log(enum LOG_TYPE type, char *format, ...) {
+    char out_buf[256];
+
+    if (!format) {
+        sprintf(out_buf, "ERROR: %s\n", strerror(errno));
+    } else {
+        va_list ptr;
+        va_start(ptr, format);
+        vsprintf(out_buf, format, ptr);
+        va_end(ptr);
+    }
 
     if (logger) {
-
-        time_t new_time;
+        time_t raw_time;
         struct tm *time_info;
-        char *buffer = (char *) malloc((time_format_len + 1) * sizeof(char));
+        char buffer[time_format_len + 1];
 
-        if (!buffer) {
-            perror("<main> p_log");
-            return;
-        }
-
-        time(&new_time);
-        time_info = localtime(&new_time);
-
+        time(&raw_time);
+        time_info = localtime(&raw_time);
         strftime(buffer, time_format_len, time_format, time_info);
         buffer[time_format_len + 1] = '\0';
 
-        fprintf(logger, "%s ", buffer);
-        free(buffer);
-
-        if (!format) {
-            fprintf(logger, "ERROR: %s\n", strerror(errno));
-        } else {
-            va_list ptr;
-            va_start(ptr, format);
-            vfprintf(logger, format, ptr);
-            va_end(ptr);
-            fflush(logger);
-        }
+        write(fileno(logger), buffer, strlen(buffer));
+        write(fileno(logger), " ", 1);
+        write(fileno(logger), out_buf, strlen(out_buf));
     }
 
     if (type == DOUBLE_LOG) {
-        if (!format) {
-            fprintf(stderr, "ERROR: %s\n", strerror(errno));
-        } else {
-            va_list ptr;
-            va_start(ptr, format);
-            vfprintf(stdout, format, ptr);
-            va_end(ptr);
-            fflush(stdout);
-        }
+        write(fileno(format ? stdout : stderr), out_buf, strlen(out_buf));
     }
-
 }
 
 
