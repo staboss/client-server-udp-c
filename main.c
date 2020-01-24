@@ -7,14 +7,11 @@
 #pragma ide diagnostic ignored "hicpp-multiway-paths-covered"
 #pragma clang diagnostic ignored "-Wunknown-pragmas"
 
-
 #include "common.h"
 #include "server.h"
 
-
 //  имя программы
 char *program_name;
-
 
 //  глобальные значения для работы приложения
 struct globalArgs_t {
@@ -29,7 +26,6 @@ struct globalArgs_t {
     char *ip_addr;
     int ip_port;
 } globalArgs;
-
 
 //  запуск программы
 int main(int argc, char **argv) {
@@ -50,7 +46,6 @@ int main(int argc, char **argv) {
     #endif
     return 0;
 }
-
 
 //  справка по программе
 void display_usage(char *error) {
@@ -73,7 +68,6 @@ void display_usage(char *error) {
     printf(format, program_name);
     exit(error ? EXIT_FAILURE : EXIT_SUCCESS);
 }
-
 
 //  установка глабальных значений
 void parse(int argc, char **argv) {

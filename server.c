@@ -9,19 +9,16 @@
 #pragma clang diagnostic ignored "-Wpointer-sign"
 #pragma clang diagnostic ignored "-Wunknown-pragmas"
 
-
 #include "server.h"
 #include "common.h"
 #include "sys/stat.h"
 #include <pthread.h>
 #include <fcntl.h>
 
-
 //  тип подключения клиент / сервер
 enum CONNECTION_TYPES {
     Server, Client
 };
-
 
 //  для отправки и получения данных
 typedef struct arg_struct {
@@ -32,10 +29,8 @@ typedef struct arg_struct {
     int imitate;
 } arg_struct;
 
-
 //  количество успешно / неуспешно обработанных запросов
 int succeed, errors;
-
 
 //  создание сокета
 int create_socket(char *ip, int port, struct sockaddr_in *addr, enum CONNECTION_TYPES type) {
@@ -70,7 +65,6 @@ int create_socket(char *ip, int port, struct sockaddr_in *addr, enum CONNECTION_
     return sock;
 }
 
-
 //  обработчики сигналов
 void term_handler();
 
@@ -96,7 +90,6 @@ void set_sig_handlers() {
     sigaction(SIGUSR1, &usr1_act, 0);           //  сигналы, определяемые пользователем
     sigaction(SIGINT, &quit_act, 0);            //  пользователь нажал CTRL-C
 }
-
 
 //  получить сообщение
 int receive_message(int sock, void **arg) {
@@ -145,7 +138,6 @@ int receive_message(int sock, void **arg) {
     } else return -1;
 }
 
-
 //  отправить сообщение
 int send_message(int sock, void **arg) {
     arg_struct *args = *arg;
@@ -159,7 +151,6 @@ int send_message(int sock, void **arg) {
 
     return 1;
 }
-
 
 //  закрываем соединение и освобождаем память
 int close_connection(int sock, void **arg) {
@@ -176,14 +167,11 @@ int close_connection(int sock, void **arg) {
     return 0;
 }
 
-
 int obj_count = 0;      //  счетчик для массива потоков
 void **array = NULL;    //  массив потоков
 
-
 //  монитор / mutex
 pthread_mutex_t stats = PTHREAD_MUTEX_INITIALIZER;
-
 
 //  добавляет поток в массив, чтобы потом иметь
 //  возможность дождаться завершения потоков при сигнале
@@ -193,14 +181,12 @@ void add_to_wait(void *obj) {
     ((pthread_t **) array)[obj_count - 1] = obj;
 }
 
-
 //  обновление статистики обслуживания запросов
 void update_stats(int stat) {
     pthread_mutex_lock(&stats);
     stat ? succeed++ : errors++;
     pthread_mutex_unlock(&stats);
 }
-
 
 //  строка в кодировке base64
 int function_base64(char *request, char *response) {
@@ -210,13 +196,11 @@ int function_base64(char *request, char *response) {
     return 1;
 }
 
-
 //  для многопоточности
 typedef struct args_multi_thread {
     arg_struct *args;
     int c_socket;
 } args_multi_thread;
-
 
 //  обработка потока
 void *thread_program(void *arg) {
@@ -240,7 +224,6 @@ void *thread_program(void *arg) {
     return NULL;
 }
 
-
 //  запуск многопоточности
 void *create_multithreading(int c_sock, void *request) {
     pthread_t *tid = calloc(1, sizeof(pthread_t));
@@ -253,16 +236,13 @@ void *create_multithreading(int c_sock, void *request) {
     return tid;
 }
 
-
 int kill_all = 0;       //  для остановки цикла
 time_t start_time;      //  время начала работы сервера
-
 
 //  возвращает переданное значение сокета
 int connection(int sock) {
     return sock;
 }
-
 
 //  программа сервера:
 //  получить сообщение -> запустить нить -> добавить нить в массив нитей
@@ -284,7 +264,6 @@ void server(char *ip, int port, int imitate) {
         }
     }
 }
-
 
 //  программа клиента:
 //  отправить сообщение -> получить сообщение
@@ -309,7 +288,6 @@ void client(char *ip, int port, char *message) {
         close_connection(c_sock, (void **) &arg);
     }
 }
-
 
 //  запуск в режиме демона
 void run_as_daemon(void) {
@@ -377,7 +355,6 @@ void run_as_daemon(void) {
     }
 }
 
-
 //  секунды в чч:мм:сс
 void sec_to_time(int sec, char *buf) {
     int h, m, s;
@@ -386,7 +363,6 @@ void sec_to_time(int sec, char *buf) {
     s = (sec - (3600 * h) - (m * 60));
     sprintf(buf, "%04d:%02d:%02d", h, m, s);
 }
-
 
 //  прекратить создавать новые нити и ждать завершение запущенных
 void quit_handler() {
@@ -401,7 +377,6 @@ void quit_handler() {
     p_log(DOUBLE_LOG, "Threads were terminated\n");
 }
 
-
 //  выйти и завершить запущенные нити
 void term_handler() {
     p_log(DOUBLE_LOG, "SIGTERM\n");
@@ -409,7 +384,6 @@ void term_handler() {
     free(array);
     exit(EXIT_SUCCESS);
 }
-
 
 //  отобразить статистику
 void usr1_handler() {

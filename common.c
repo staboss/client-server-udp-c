@@ -7,13 +7,10 @@
 #pragma ide diagnostic ignored "bugprone-narrowing-conversions"
 #pragma clang diagnostic ignored "-Wunknown-pragmas"
 
-
 #include "common.h"
-
 
 static char *time_format = "[%d.%m.%Y %H:%M:%S] >>> ";
 static int time_format_len = 27;
-
 
 //  логирование
 void p_log(enum LOG_TYPE type, char *format, ...) {
@@ -48,10 +45,8 @@ void p_log(enum LOG_TYPE type, char *format, ...) {
     }
 }
 
-
 //  используется для преобразования 3-байтовых последовательностей в символы
 const char b64chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
 
 /*
  * В кодировке base64 три двоичных байта представлены как четыре символа
@@ -71,7 +66,6 @@ size_t b64_encoded_size(size_t in_len) {
 
     return ret;
 }
-
 
 /*
  * Функция кодирования работает в блоках по 3-двоичных байта данных,
@@ -100,7 +94,6 @@ char *b64_encode(const unsigned char *in, size_t len) {
         v = in[i];
         v = i + 1 < len ? v << 8 | in[i + 1] : v << 8;
         v = i + 2 < len ? v << 8 | in[i + 2] : v << 8;
-
 
         //  вытаскиваем символ base64 из сопоставления, где используется 0x3F,
         //  потому что всего 6 бит, где все установлено и поскольку каждый выходной байт
