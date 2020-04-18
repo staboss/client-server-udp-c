@@ -1,4 +1,4 @@
-# A Client-Server program that works over UDP
+# UDP Client/Server Application
 ### How to run a server
 `./server -a [HOST] -p [PORT]`
 - `-h` : show usage
