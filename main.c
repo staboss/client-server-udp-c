@@ -69,7 +69,7 @@ void display_usage(char *error) {
     exit(error ? EXIT_FAILURE : EXIT_SUCCESS);
 }
 
-//  установка глабальных значений
+//  установка глобальных значений
 void parse(int argc, char **argv) {
     char *tmp;
 
